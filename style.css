@@ -1,0 +1,90 @@
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&display=swap');
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Dancing Script", serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #4577a2;
+}
+
+.book {
+  width: min(45vw, calc(90vh * 3 / 4)); /* Tối đa 50% chiều ngang hoặc theo tỷ lệ 3:4 */
+  aspect-ratio: 3 / 4; /* Duy trì tỷ lệ cố định 3:4 */
+  position: relative;
+  perspective: 1500px;
+  transition: 1s;
+}
+.book.open {
+  transform: translateX(calc(min(45vw, calc(90vh * 3 / 4)) / 2)); /* Dịch cuốn sách sang phải */
+  transition: 1s;
+}
+
+.page {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  transform-style: preserve-3d;
+  transform-origin: left;
+  transition: transform 0.8s ease-in-out, z-index 0.8s ease-in-out; /* Thêm hiệu ứng mượt khi thay đổi trạng thái */
+}
+
+.page .front,
+.page .back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.page .front {
+  background-color: #aeb192;
+  z-index: 2;
+}
+
+.page .back {
+  background-color: #aeb192;
+  transform: rotateY(180deg);
+}
+
+.page .content {
+  padding: 5%; /* Khoảng cách nội dung với mép box theo tỷ lệ */
+  box-sizing: border-box;
+  font-size: min(2.5vw, max(14px, 1.5rem)); /* Sử dụng min và max để kiểm soát cỡ chữ */
+  line-height: 1.5; /* Duy trì khoảng cách dòng dễ đọc */
+  color: #333;
+  word-wrap: break-word; /* Đảm bảo văn bản xuống dòng nếu quá dài */
+  text-align: justify; /* Canh đều văn bản cho thẩm mỹ */
+}
+
+
+.page:nth-child(1) .front img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover; /* Đảm bảo ảnh phủ toàn bộ mà không bị méo */
+  display: block; /* Loại bỏ khoảng trống không mong muốn */
+}
+
+.page:nth-child(1) {
+  z-index: 3;
+}
+
+.page:nth-child(2) {
+  z-index: 2;
+}
+
+.page:nth-child(3) {
+  z-index: 1;
+}
+
+.page.flipped {
+  transform: rotateY(-180deg);
+  z-index: 0; /* Đảm bảo lật các trang cũ ra sau */
+  transition-delay: 0.1s; /* Tăng thêm chút thời gian cho hiệu ứng */
+}
